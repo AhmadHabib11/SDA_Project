@@ -1,2 +1,7 @@
 /application/
 /bl/
+/model/
+/dao/
+/service/
+/controller/
+/util/

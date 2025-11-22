@@ -32,6 +32,30 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import controller.ShipmentController;
+import controller.DriverController;
+
+import dao.ShipmentDAO;
+import dao.ShipmentDAOImpl;
+import dao.DriverDAO;
+import dao.DriverDAOImpl;
+import dao.VehicleDAO;
+import dao.VehicleDAOImpl;
+
+import model.Shipment;
+import model.Driver;
+import model.Vehicle;
+
+import service.ShipmentAllocationService;
+import service.ShipmentService;
+import service.ShipmentServiceImpl;
+import service.AssignmentService;
+import service.DriverService;
+import service.VehicleService;
+
+import util.LoggerUtil;
+import util.ValidatorUtil;
+
 class UpdateShipmentStatusFrame extends JFrame {
 
  // Color palette (same as Dashboard / AllocateShipmentFrame)

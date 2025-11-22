@@ -6,7 +6,31 @@ import java.awt.geom.RoundRectangle2D;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import bl.VehicleService;
+//import bl.VehicleService;
+
+import controller.ShipmentController;
+import controller.DriverController;
+
+import dao.ShipmentDAO;
+import dao.ShipmentDAOImpl;
+import dao.DriverDAO;
+import dao.DriverDAOImpl;
+import dao.VehicleDAO;
+import dao.VehicleDAOImpl;
+
+import model.Shipment;
+import model.Driver;
+import model.Vehicle;
+
+import service.ShipmentAllocationService;
+import service.ShipmentService;
+import service.ShipmentServiceImpl;
+import service.AssignmentService;
+import service.DriverService;
+import service.VehicleService;
+
+import util.LoggerUtil;
+import util.ValidatorUtil;
 
 /* ============================================================== 
    REGISTER VEHICLE SCREEN (Fixed for cross-platform)
@@ -280,7 +304,33 @@ class RegisterVehicleFrame extends JFrame {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
         panel.setOpaque(false);
 
-        JButton btnRegister = new JButton("Register Vehicle");
+        JButton btnRegister = new JButton("Register Vehicle") {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                if (getModel().isPressed()) {
+                    g2d.setColor(new Color(146, 186, 47));
+                } else if (getModel().isRollover()) {
+                    g2d.setPaint(new GradientPaint(0, 0,
+                        new Color(186, 226, 77), getWidth(), 0, LIME));
+                } else {
+                    g2d.setPaint(new GradientPaint(0, 0,
+                        LIME, getWidth(), 0, new Color(146, 186, 47)));
+                }
+
+                g2d.fill(new RoundRectangle2D.Float(0, 0, getWidth(),
+                    getHeight(), 10, 10));
+
+                g2d.setColor(WHITE);
+                FontMetrics fm = g2d.getFontMetrics();
+                int x = (getWidth() - fm.stringWidth(getText())) / 2;
+                int y = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
+                g2d.drawString(getText(), x, y);
+            }
+        };
+        
         btnRegister.setPreferredSize(new Dimension(200, 50));
         btnRegister.setFont(new Font("SansSerif", Font.BOLD, 15));
         btnRegister.setForeground(WHITE);
@@ -290,7 +340,35 @@ class RegisterVehicleFrame extends JFrame {
         btnRegister.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnRegister.addActionListener(e -> registerVehicle());
 
-        JButton btnCancel = new JButton("Cancel");
+        JButton btnCancel = new JButton("Cancel") {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                if (getModel().isPressed()) {
+                    g2d.setColor(new Color(200, 200, 200));
+                } else if (getModel().isRollover()) {
+                    g2d.setColor(new Color(220, 220, 220));
+                } else {
+                    g2d.setColor(LIGHT_BG);
+                }
+
+                g2d.fill(new RoundRectangle2D.Float(0, 0, getWidth(),
+                    getHeight(), 10, 10));
+
+                g2d.setColor(TEXT_DARK);
+                g2d.setStroke(new BasicStroke(2));
+                g2d.draw(new RoundRectangle2D.Float(1, 1, getWidth() - 2,
+                    getHeight() - 2, 10, 10));
+
+                FontMetrics fm = g2d.getFontMetrics();
+                int x = (getWidth() - fm.stringWidth(getText())) / 2;
+                int y = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
+                g2d.drawString(getText(), x, y);
+            }
+        };
+        
         btnCancel.setPreferredSize(new Dimension(150, 50));
         btnCancel.setFont(new Font("SansSerif", Font.BOLD, 15));
         btnCancel.setForeground(TEXT_DARK);

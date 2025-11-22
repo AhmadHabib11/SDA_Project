@@ -29,7 +29,19 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import bl.ShipmentService;
+//import bl.ShipmentService;
+
+
+import controller.ShipmentController;
+import dao.ShipmentDAO;
+import dao.ShipmentDAOImpl;
+import model.Shipment;
+import service.ShipmentAllocationService;
+import service.ShipmentService;
+import service.ShipmentServiceImpl;
+import util.LoggerUtil;
+import util.ValidatorUtil;
+
 
 /* ==============================================================
 CREATE SHIPMENT SCREEN
@@ -433,8 +445,9 @@ class CreateShipmentFrame extends JFrame {
             return;
         }
 
-        ShipmentService service = new ShipmentService();
-        boolean success = service.createShipment(cargo, weight, dest, pickup);
+        ShipmentController controller = new ShipmentController();
+        boolean success = controller.createShipment(cargo, weight, dest, pickup);
+
 
         if (success) {
             JOptionPane.showMessageDialog(this,
